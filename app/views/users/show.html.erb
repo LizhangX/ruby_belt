@@ -1,0 +1,24 @@
+<div class="container-fluid">
+    <div class="navbar row">
+        <div class="col-8"></div>
+        <a class="nav-link btn btn-info col-2" href="/bright_ideas">Bright Ideas</a>
+        <% if @user %>
+            <form class="col-2"action="/sessions/<%=@user.id%>" method="post">
+                <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+                <input type="hidden" name="_method" value="delete">
+                <input type="submit" class="btn btn-info" value="Log Out">
+            </form>
+        <% end %> 
+    </div>
+
+    <div class="container">
+        <p>Name: <%= @user.name %></p>
+        <p>Alias: <%= @user.alias %></p>
+        <p>Email: <%= @user.email %></p>
+    </div>
+    <hr>
+    <div class="container">
+        <p>Total Number of Posts: <%= @user.ideas.count %></p>
+        <p>Total Number of Likes: <%= @user.likes.count %></p>
+    </div>
+</div>

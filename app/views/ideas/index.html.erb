@@ -1,0 +1,49 @@
+<div class="container-fluid">
+    <div class="navbar row">
+        <div class="col-8"></div>
+        <% if @user %>
+            <form class="col-2"action="/sessions/<%=@user.id%>" method="post">
+                <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+                <input type="hidden" name="_method" value="delete">
+                <input type="submit" class="btn btn-info" value="Log Out">
+            </form>
+        <% end %> 
+    </div>
+    <div class="container">
+        <h1>Hi <%= @user.alias %>!</h1>
+
+        <form action="/bright_ideas" method="post">
+            <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+            <div class="form-group">
+                <textarea name="idea[content]" id="Content" cols="20" rows="5" class="form-control"></textarea>
+                <button type="submit" class="btn btn-primary">Idea!</button>
+            </div>
+        </form>
+
+        <div class="container text-danger">
+            <% if flash[:errors] %>
+                <% flash[:errors].each do |error| %>
+                    <div class="row">
+                        ***<%= error %>***
+                    </div>
+                <% end %>
+            <% end %>
+        </div>
+        <div class="container-fluid">
+            <% @ideas.each do |idea| %>
+              <div>
+                <a href="/users/<%= idea.user.id %>"><%= idea.user.alias %></a> says:
+                <div class="border border-dark">
+                    <%= idea.content %>
+                </div>
+                <a href="/bright_ideas/<%= idea.id %>/likes" data-method="post">Like</a> |
+                <a href="/bright_ideas/<%= idea.id %>"><%= idea.likes.count %> people</a>  like this.
+                <% if idea.user == @user %>
+                    <a href="/bright_ideas/<%= idea.id %>" data-method="delete">Delete</a>
+                <% end %>
+              </div>
+              <hr>
+            <% end %>
+        </div>
+    </div>
+</div>
